@@ -14,4 +14,7 @@ app.use("/api/users", usersRoute);
 const firmsRoute = require("./routes/firmRoutes") 
 app.use("/api/firms", firmsRoute);
 
+const supplierRoute = require("./routes/supplierRoute") 
+app.use("/api/suppliers", supplierRoute);
+
 app.listen(port , ()=> console.log(`Node Js server started at ${port}`))
