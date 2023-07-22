@@ -104,4 +104,47 @@ router.put("/edit-firm/:id" , authMiddleware , async(req,res)=>{
         });
     }
 });
+
+// Image upload to cloudinary
+
+//according to multer documentation
+
+// using multer : getting image from pc
+const storage = multer.diskStorage({
+    filename : function(req,file,callback){
+        callback(null , Date.now() + file.originalname);
+    }
+})
+
+//route for upload image
+router.put("/upload-header-image" , authMiddleware , multer({storage : storage}).single('file'), async(req,res) =>{
+    try {
+        console.log("inside route")
+
+        // uploading image to cloudinary
+        const result = await cloudinary.uploader.upload(req.file.path ,{
+            folder : "trade",
+        });
+
+        const firmId = req.body.firmId;
+
+        await Firm.findByIdAndUpdate(firmId ,{
+            $push : { header_img : result.secure_url},
+        });
+
+
+        res.send({
+            success : true,
+            message : "Header Image Uploaded Successfully",
+            data : result.secure_url,
+        })
+
+    } catch (error) {
+        res.send({
+            success : false,
+            message : error.message,
+        })
+    }
+});
+
 module.exports = router;
