@@ -7,7 +7,7 @@ const User = require('../models/userModel');
 
 //add a new product
 
-router.post("/add-supplier" , authMiddleware , async(req,res)=>{
+router.post("/add-rawmaterial" , authMiddleware , async(req,res)=>{
     try {
         const user = await User.findById(req.body.userId);
         const newRawMaterial = new RawMaterial({
@@ -17,7 +17,7 @@ router.post("/add-supplier" , authMiddleware , async(req,res)=>{
         await newRawMaterial.save();
         res.send({
             success : true,
-            message : "Supplier Added Sucessfully"
+            message : "Rawmaterial Added Sucessfully"
         })
 
     } catch (error) {
@@ -30,7 +30,7 @@ router.post("/add-supplier" , authMiddleware , async(req,res)=>{
 
 //get all products
 
-router.get("/get-supplier" , authMiddleware , async(req,res)=>{
+router.get("/get-rawmaterial" , authMiddleware , async(req,res)=>{
     try {
         
     //     const{seller , category = [] , age = {} ,status} = req.body;
@@ -56,10 +56,10 @@ router.get("/get-supplier" , authMiddleware , async(req,res)=>{
     //     });
     //    } 
 
-        const suppliers = await Supplier.find().sort({createdAt : -1});
+        const rawmaterials = await RawMaterial.find().sort({createdAt : -1});
         res.send({
             success : true,
-            data : suppliers,
+            data : rawmaterials,
         })
 
     } catch (error) {
@@ -72,13 +72,13 @@ router.get("/get-supplier" , authMiddleware , async(req,res)=>{
 
 //delete a supplier
 
-router.delete("/delete-supplier/:id" , authMiddleware , async(req,res)=>{
+router.delete("/delete-rawmaterial/:id" , authMiddleware , async(req,res)=>{
     try {
         
-        await Supplier.findByIdAndDelete(req.params.id);
+        await RawMaterial.findByIdAndDelete(req.params.id);
         res.send({
             success : true,
-            message : "Supplier Deleted successfully",
+            message : "RawMaterial Deleted successfully",
         });
 
     } catch (error) {
@@ -91,13 +91,13 @@ router.delete("/delete-supplier/:id" , authMiddleware , async(req,res)=>{
 
 // edit a supplier
 
-router.put("/edit-supplier/:id" , authMiddleware , async(req,res)=>{
+router.put("/edit-rawmaterial/:id" , authMiddleware , async(req,res)=>{
     try {
         
-        await Supplier.findByIdAndUpdate(req.params.id , req.body);
+        await RawMaterial.findByIdAndUpdate(req.params.id , req.body);
         res.send({
             success : true,
-            message : "Supplier Updated successfully",
+            message : "RawMaterial Updated successfully",
         });
 
     } catch (error) {
