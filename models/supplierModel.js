@@ -13,6 +13,12 @@ const supplierSchema = new mongoose.Schema({
         default : "",
     },
 
+    userId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "users",
+        required : true,
+    },
+
     supplier_address : {
         type : String,
         required : true,

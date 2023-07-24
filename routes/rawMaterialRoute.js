@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const Supplier = require("../models/supplierModel");
+const RawMaterial = require("../models/rawMaterialModel")
 const authMiddleware = require("../middlewares/authMiddleware");
 const User = require('../models/userModel');
 
@@ -10,11 +10,11 @@ const User = require('../models/userModel');
 router.post("/add-supplier" , authMiddleware , async(req,res)=>{
     try {
         const user = await User.findById(req.body.userId);
-        const newSupplier = new Supplier({
+        const newRawMaterial = new RawMaterial({
             ...req.body,
             userId: user._id,
         })
-        await newSupplier.save();
+        await newRawMaterial.save();
         res.send({
             success : true,
             message : "Supplier Added Sucessfully"

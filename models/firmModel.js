@@ -17,6 +17,12 @@ const firmSchema = new mongoose.Schema({
         default : "",
     },
 
+    userId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "users",
+        required : true,
+    },
+
     firm_address : {
         type : String,
         required : true,
@@ -37,6 +43,7 @@ const firmSchema = new mongoose.Schema({
         required : true,
         default : "",
     },
+
     person_email : {
         type : String,
         required : true,
@@ -73,5 +80,5 @@ const firmSchema = new mongoose.Schema({
     timestamps : true
 })
 
-const User = mongoose.model("firms",firmSchema);
-module.exports = User;
+const firms = mongoose.model("firms",firmSchema);
+module.exports = firms;
