@@ -17,4 +17,11 @@ app.use("/api/firms", firmsRoute);
 const supplierRoute = require("./routes/supplierRoute") 
 app.use("/api/suppliers", supplierRoute);
 
+const rawmaterialRoute = require("./routes/rawMaterialRoute") 
+app.use("/api/rawmaterial", rawmaterialRoute);
+
+const TypeRoute = require("./routes/TypeRoute") 
+app.use("/api/materialtype", TypeRoute);
+
+
 app.listen(port , ()=> console.log(`Node Js server started at ${port}`))

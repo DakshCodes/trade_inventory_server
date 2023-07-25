@@ -9,6 +9,11 @@ const rawMaterialSchema = mongoose.Schema({
         type : String,
         required : true,
     },
+    userId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "users",
+        required : true,
+    },
     material_type :{
         type : String,
         required : true,
@@ -21,5 +26,5 @@ const rawMaterialSchema = mongoose.Schema({
     
 });
 
-const rawMaterial = mongoose.model("rawMaterial",rawMaterialSchema);
-module.exports = rawMaterial;
+const rawMaterialModel = mongoose.model("rawMaterial",rawMaterialSchema);
+module.exports = rawMaterialModel;
