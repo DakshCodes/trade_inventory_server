@@ -23,7 +23,7 @@ const rawMaterialSchema = mongoose.Schema({
         required : true,
     }
 },{
-    
+    timestamps : true
 });
 
 const rawMaterialModel = mongoose.model("rawMaterial",rawMaterialSchema);

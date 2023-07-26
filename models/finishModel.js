@@ -31,8 +31,8 @@ const FinishSchema = mongoose.Schema({
         required: true,
     },
 
-}, {
-
+},{
+    timestamps : true
 });
 
 const finishproduct = mongoose.model("finishproducts", FinishSchema);

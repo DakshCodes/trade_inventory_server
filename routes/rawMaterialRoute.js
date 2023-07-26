@@ -10,6 +10,7 @@ const User = require('../models/userModel');
 router.post("/add-rawmaterial" , authMiddleware , async(req,res)=>{
     try {
         const user = await User.findById(req.body.userId);
+        console.log("-------------------" ,req.body.material_type);
         const newRawMaterial = new RawMaterial({
             ...req.body,
             userId: user._id,

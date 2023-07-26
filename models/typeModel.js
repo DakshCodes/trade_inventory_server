@@ -13,7 +13,7 @@ const TypeSchema = mongoose.Schema({
     },
     
 },{
-    
+    timestamps : true
 });
 
 const rawmaterialtype = mongoose.model("rawTypes",TypeSchema);

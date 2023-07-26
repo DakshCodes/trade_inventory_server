@@ -28,7 +28,7 @@ const PurchasedSchema = mongoose.Schema({
     },
 
 }, {
-
+    timestamps : true
 });
 
 const purchaseorder = mongoose.model("finishproducts", PurchasedSchema);

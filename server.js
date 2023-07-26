@@ -23,5 +23,8 @@ app.use("/api/rawmaterial", rawmaterialRoute);
 const TypeRoute = require("./routes/TypeRoute") 
 app.use("/api/materialtype", TypeRoute);
 
+const finishproductRoute = require("./routes/finishProductRoute") 
+app.use("/api/finishproduct", finishproductRoute);
+
 
 app.listen(port , ()=> console.log(`Node Js server started at ${port}`))
