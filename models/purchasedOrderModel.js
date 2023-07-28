@@ -1,26 +1,81 @@
 const mongoose = require("mongoose")
 
 const PurchasedSchema = mongoose.Schema({
-    order_date: {
+    po_no: {
         type: String,
         required: true,
+        default : "1",
+    },
+    order_date: {
+        type: String,
+        required: true
     },
     supplier_name: {
         type: String,
-        required: true,
+        required: true
     },
     refrence_no: {
         type: String,
-        required: true,
+        required: true
     },
-    deleveryat: {
+    deliveryat: {
         type: String,
-        required: true,
+        required: true
     },
     terms_condition: {
         type: String,
-        required: true,
+        required: true
     },
+    materials: [
+        // Assuming you have a Material schema or model defined with fields like: particulars, description_of_material, order_quantity, rate, purchase_value, etc.
+        {
+            particulars: {
+                type: String,
+                required: true
+            },
+            description_of_material: {
+                type: String,
+                required: true
+            },
+            order_quantity: {
+                type: String,
+                required: true
+            },
+            rate: {
+                type: String,
+                required: true
+            },
+            purchase_value: {
+                type: String,
+                required: true
+            }
+        }
+    ],
+
+    finish_product: [
+        {
+          finish_particulars: {
+            type: String,
+            required: true,
+          },
+          finish_description_of_material: {
+            type: String,
+            required: true,
+          },
+          finish_order_quantity: {
+            type: String,
+            required: true,
+          },
+          finish_rate: {
+            type: String,
+            required: true,
+          },
+          finish_purchase_value: {
+            type: String,
+            required: true,
+          },
+        },
+      ],
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
@@ -28,8 +83,8 @@ const PurchasedSchema = mongoose.Schema({
     },
 
 }, {
-    timestamps : true
+    timestamps: true
 });
 
-const purchaseorder = mongoose.model("finishproducts", PurchasedSchema);
+const purchaseorder = mongoose.model("purchaseOrder", PurchasedSchema);
 module.exports = purchaseorder;

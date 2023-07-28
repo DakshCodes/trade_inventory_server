@@ -26,5 +26,8 @@ app.use("/api/materialtype", TypeRoute);
 const finishproductRoute = require("./routes/finishProductRoute") 
 app.use("/api/finishproduct", finishproductRoute);
 
+const purchaseRoute = require("./routes/purchaseRoutes") 
+app.use("/api/purchases", purchaseRoute);
+
 
 app.listen(port , ()=> console.log(`Node Js server started at ${port}`))
