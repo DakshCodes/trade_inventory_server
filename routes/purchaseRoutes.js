@@ -26,7 +26,7 @@ router.post('/add-purchase-order',authMiddleware, async (req, res) => {
 // Route to get all purchase orders
 router.get('/get-purchase-orders', async (req, res) => {
     try {
-        const purchases = await Purchase.find();
+        const purchases = await Purchase.find().populate('supplier');
         res.json({
             success: true,
             data: purchases

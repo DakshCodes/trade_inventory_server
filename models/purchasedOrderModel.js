@@ -4,16 +4,18 @@ const PurchasedSchema = mongoose.Schema({
     po_no: {
         type: String,
         required: true,
-        default : "1",
+        default: "1",
     },
     order_date: {
         type: String,
         required: true
     },
-    supplier_name: {
-        type: String,
-        required: true
+    supplier: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "suppliers", // This refers to the name of the Supplier model
+        required: true,
     },
+    
     refrence_no: {
         type: String,
         required: true
@@ -54,28 +56,28 @@ const PurchasedSchema = mongoose.Schema({
 
     finish_product: [
         {
-          finish_particulars: {
-            type: String,
-            required: true,
-          },
-          finish_description_of_material: {
-            type: String,
-            required: true,
-          },
-          finish_order_quantity: {
-            type: String,
-            required: true,
-          },
-          finish_rate: {
-            type: String,
-            required: true,
-          },
-          finish_purchase_value: {
-            type: String,
-            required: true,
-          },
+            finish_particulars: {
+                type: String,
+                required: true,
+            },
+            finish_description_of_material: {
+                type: String,
+                required: true,
+            },
+            finish_order_quantity: {
+                type: String,
+                required: true,
+            },
+            finish_rate: {
+                type: String,
+                required: true,
+            },
+            finish_purchase_value: {
+                type: String,
+                required: true,
+            },
         },
-      ],
+    ],
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
