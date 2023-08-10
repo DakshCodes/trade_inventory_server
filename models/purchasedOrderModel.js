@@ -76,8 +76,21 @@ const PurchasedSchema = mongoose.Schema({
                 type: String,
                 required: true,
             },
+            
         },
     ],
+
+    balanced_quantity : {
+        type: String,
+        required: true,
+        default : "1",
+    },
+    recevied_quantity : {
+        type: String,
+        required: true,
+        default : "0",
+    },
+
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
