@@ -29,5 +29,8 @@ app.use("/api/finishproduct", finishproductRoute);
 const purchaseRoute = require("./routes/purchaseRoutes") 
 app.use("/api/purchases", purchaseRoute);
 
+const processRoute = require("./routes/processRoute") 
+app.use("/api/process", processRoute);
+
 
 app.listen(port , ()=> console.log(`Node Js server started at ${port}`))
