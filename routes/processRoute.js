@@ -6,21 +6,43 @@ const User = require('../models/userModel');
 
 
 // Route to add a new purchase order
-router.post('/add-product',authMiddleware, async (req, res) => {
+router.post('/add-product', authMiddleware, async (req, res) => {
     try {
-        const user = await User.findById(req.body.userId);
-        const newPurchase = await ProcessMaster.create({
-            ...req.body,
-            userId : user._id,
+        const { product_name, materials ,nextStageValues} = req.body;
+
+        // Calculate the sum of received product quantities for each material in the current stage
+        console.log(req.body)
+      
+        const process = new ProcessMaster({
+            stage: [
+                {
+                    product_name,
+                    materials,
+                },
+            ],
+            nextStageValues, // Use the calculated sum as nextStageValues
         });
-        res.status(201).json({
-            success: true,
-            message: 'Purchase order added successfully',
-            data: newPurchase
-        });
+
+        const savedProcess = await process.save();
+
+        res.status(201).json({ success: true, message: "Stage added successfully", process: savedProcess });
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Failed to add purchase order', error: error.message });
+        res.status(500).json({ success: false, message: error.message });
     }
+    // try {
+    //     const user = await User.findById(req.body.userId);
+    //     const newPurchase = await ProcessMaster.create({
+    //         ...req.body,
+    //         userId : user._id,
+    //     });
+    //     res.status(201).json({
+    //         success: true,
+    //         message: 'Purchase order added successfully',
+    //         data: newPurchase
+    //     });
+    // } catch (error) {
+    //     res.status(500).json({ success: false, message: 'Failed to add purchase order', error: error.message });
+    // }
 });
 
 // Route to get all purchase orders
@@ -54,16 +76,54 @@ router.get('/get-product', async (req, res) => {
 router.put('/edit-product/:id', async (req, res) => {
     try {
         const purchaseId = req.params.id;
-        const updatedPurchase = await ProcessMaster.findByIdAndUpdate(purchaseId, req.body, { new: true });
+        const { materials } = req.body;
+        console.log(req.body)
+
+        const updatedPurchase = await ProcessMaster.findByIdAndUpdate(
+            purchaseId,
+            { $set: { "stage.$[stageElem].materials": materials } }, // Update the materials array within each stage
+            { arrayFilters: [{ "stageElem.product_name": { $exists: true } }], new: true }
+        );
+        console.log('Updated purchase:', purchaseId);
         if (!updatedPurchase) {
             return res.status(404).json({ success: false, message: 'Purchase order not found' });
         }
-        res.json({ success: true, message: 'Purchase order updated successfully', data: updatedPurchase });
+        res.json({ success: true, message: 'Process details updated successfully', data: updatedPurchase });
     } catch (error) {
         res.status(500).json({ success: false, message: 'Failed to update purchase order', error: error.message });
     }
 });
 
+
+router.put('/edit-product2/:processId', authMiddleware, async (req, res) => {
+    try {
+      const { product_name, materials } = req.body;
+      const processId = req.params.processId;
+        
+      console.log(processId)
+      // Find the existing process document by its ID
+      const process = await ProcessMaster.findById(processId);
+  
+      if (!process) {
+        return res.status(404).json({ success: false, message: "Process not found." });
+      }
+  
+  
+      // Add the new stage with the calculated nextStageValues and materials
+      process.stage.push({
+        product_name,
+        materials,
+      });
+  
+      // Update the process with the new stage
+      const savedProcess = await process.save();
+  
+      res.status(201).json({ success: true, message: "Stage added successfully", process: savedProcess });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  });
+  
 
 // Route to delete a specific purchase order by ID
 router.delete('/delete-product/:id', async (req, res) => {
