@@ -8,11 +8,11 @@ const User = require('../models/userModel');
 // Route to add a new purchase order
 router.post('/add-product', authMiddleware, async (req, res) => {
     try {
-        const { product_name, materials ,nextStageValues} = req.body;
+        const { product_name, materials } = req.body;
 
         // Calculate the sum of received product quantities for each material in the current stage
         console.log(req.body)
-      
+
         const process = new ProcessMaster({
             stage: [
                 {
@@ -20,7 +20,7 @@ router.post('/add-product', authMiddleware, async (req, res) => {
                     materials,
                 },
             ],
-            nextStageValues, // Use the calculated sum as nextStageValues
+             // Use the calculated sum as nextStageValues
         });
 
         const savedProcess = await process.save();
@@ -97,33 +97,33 @@ router.put('/edit-product/:id', async (req, res) => {
 
 router.put('/edit-product2/:processId', authMiddleware, async (req, res) => {
     try {
-      const { product_name, materials } = req.body;
-      const processId = req.params.processId;
-        
-      console.log(processId)
-      // Find the existing process document by its ID
-      const process = await ProcessMaster.findById(processId);
-  
-      if (!process) {
-        return res.status(404).json({ success: false, message: "Process not found." });
-      }
-  
-  
-      // Add the new stage with the calculated nextStageValues and materials
-      process.stage.push({
-        product_name,
-        materials,
-      });
-  
-      // Update the process with the new stage
-      const savedProcess = await process.save();
-  
-      res.status(201).json({ success: true, message: "Stage added successfully", process: savedProcess });
+        const { product_name, materials } = req.body;
+        const processId = req.params.processId;
+
+        console.log(processId)
+        // Find the existing process document by its ID
+        const process = await ProcessMaster.findById(processId);
+
+        if (!process) {
+            return res.status(404).json({ success: false, message: "Process not found." });
+        }
+
+
+        // Add the new stage with the calculated nextStageValues and materials
+        process.stage.push({
+            product_name,
+            materials,
+        });
+
+        // Update the process with the new stage
+        const savedProcess = await process.save();
+
+        res.status(201).json({ success: true, message: "Stage added successfully", process: savedProcess });
     } catch (error) {
-      res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: error.message });
     }
-  });
-  
+});
+
 
 // Route to delete a specific purchase order by ID
 router.delete('/delete-product/:id', async (req, res) => {
@@ -138,5 +138,33 @@ router.delete('/delete-product/:id', async (req, res) => {
         res.status(500).json({ success: false, message: 'Failed to delete purchase order', error: error.message });
     }
 });
+
+// route to edit the status of the code
+router.put('/edit-stage-values/:processId', authMiddleware, async (req, res) => {
+    try {
+        const processId = req.params.processId;
+        console.log(processId)
+        // Find the existing process document by its ID
+         // Find the existing process document by its ID
+         const process = await ProcessMaster.findById(processId);
+
+         if (!process) {
+             return res.status(404).json({ success: false, message: "Process not found." });
+         }
+ 
+         // Increment the nextStageValues field by 1
+         process.nextStageValues += 1;
+ 
+         // Save the updated process document
+         const updatedProcess = await process.save();
+ 
+         console.log("Updated process:", updatedProcess);
+
+         res.json({ success: true, message: "Transferred to next stage successfully." });
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+})
 
 module.exports = router;
