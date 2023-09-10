@@ -95,6 +95,61 @@ router.put('/edit-product/:id', async (req, res) => {
 });
 
 
+// get product by id
+
+router.get("/get-product-by-id/:id" , async(req,res)=>{
+    try {
+        const product = await ProcessMaster.findById(req.params.id);
+        res.send({
+            success : true,
+            data : product,
+        });
+        
+    } catch (error) {
+        res.send({
+            success : false,
+            message : error.message,
+        });
+    }
+});
+
+router.put('/edit-product-initialised/:processId/:stageIndex', authMiddleware, async (req, res) => {
+    try {
+      const { product_name, materials } = req.body;
+      const processId = req.params.processId;
+      const stageIndex = req.params.stageIndex;
+      console.log(stageIndex)
+  
+      // Find the existing process document by its ID
+      const process = await ProcessMaster.findById(processId);
+  
+      if (!process) {
+        return res.status(404).json({ success: false, message: "Process not found." });
+      }
+  
+      // Check if the stageIndex is valid
+      if (stageIndex < 0 || stageIndex >= process.stage.length) {
+        return res.status(400).json({ success: false, message: "Invalid stage index." });
+      }
+  
+      // Update the stage at the specified index
+      const updatedStage = {
+        product_name,
+        materials,
+      };
+  
+      process.stage[stageIndex] = updatedStage;
+  
+      // Save the updated process
+      const savedProcess = await process.save();
+  
+      res.status(200).json({ success: true, message: "Stage initially Edited  successfully", process: savedProcess });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  });
+  
+
 router.put('/edit-product2/:processId', authMiddleware, async (req, res) => {
     try {
         const { product_name, materials } = req.body;

@@ -22,11 +22,13 @@ const processSchema = mongoose.Schema({
                     },
                     received_product_quantity: {
                         type: String,
-                        required: true
+                        required: true,
+                        default : 0,
                     },
                     garbage_quantity: {
                         type: String,
-                        required: true
+                        required: true,
+                        default : 0,
                     },
                     
                 }
