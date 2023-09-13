@@ -69,7 +69,7 @@ router.get("/confirm/:token", async (req, res) => {
     try {
 
         const token = await Token.findOne({
-            token: req.params.token,
+            token: req.body.token || req.params.token,
         })
         console.log(token);
 
